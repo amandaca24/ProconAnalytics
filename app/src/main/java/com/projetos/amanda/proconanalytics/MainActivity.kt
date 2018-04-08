@@ -8,13 +8,9 @@ import android.support.design.widget.TextInputEditText
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
-
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +21,10 @@ class MainActivity : AppCompatActivity() {
     private var email: String? = null
     private var password: String? = null
     //UI elements
-    private var etEmail: TextInputEditText? = null
-    private var etPassword: TextInputEditText? = null
+//    private var etEmail: TextInputEditText? = null
+//    private var etPassword: TextInputEditText? = null
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
     private var btnLogin: Button? = null
     private var btnCadatrar: Button? = null
     private var idRecupera: Button? = null
@@ -46,8 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLogin(){
 
-        etEmail = findViewById<TextInputEditText>(R.id.idEmailInput)
-        etPassword = findViewById<TextInputEditText>(R.id.idSenhaInput)
+        etEmail = findViewById<EditText>(R.id.etEmail)
+        etPassword = findViewById<EditText>(R.id.etPassword)
         btnLogin = findViewById<Button>(R.id.btnLog)
         btnCadatrar = findViewById<Button>(R.id.btnCadastro)
         idRecupera = findViewById<Button>(R.id.idRecuperaSenha)
@@ -67,8 +65,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginUser() {
-        email = etEmail?.text.toString()
-        password = etPassword?.text.toString()
+        email = etEmail.text.toString()
+        password = etPassword.text.toString()
 
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
 
