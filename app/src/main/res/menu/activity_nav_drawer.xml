@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:title="@string/dashboard" />
+        <item
+            android:id="@+id/nav_top10"
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="@string/top10" />
+
+        <item
+            android:id="@+id/id_map"
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="@string/map" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_account_box_black_24dp"
+            android:title="@string/logout" />
+
+
+    </group>
+
+    <item android:title="@string/sobre">
+        <menu>
+            <item
+                android:id="@+id/nav_about_procon"
+                android:icon="@drawable/ic_face_black_24dp"
+                android:title="@string/procon" />
+            <item
+                android:id="@+id/nav_about_analytics"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="@string/analytics" />
+
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/sugestoes" />
+        </menu>
+    </item>
+
+</menu>
