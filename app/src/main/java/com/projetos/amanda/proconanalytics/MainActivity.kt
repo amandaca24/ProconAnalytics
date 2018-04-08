@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var btnLogin: Button? = null
     private var btnCadatrar: Button? = null
     private var idRecupera: Button? = null
+    private var checkConecta: CheckBox? = null
 
     private var auth: FirebaseAuth? = null
 
@@ -44,11 +46,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLogin(){
 
-        etEmail = findViewById(R.id.idEmailInput) as TextInputEditText
-        etPassword = findViewById(R.id.idSenhaInput) as TextInputEditText
-        btnLogin = findViewById(R.id.btnLog)as Button
-        btnCadatrar = findViewById(R.id.btnCadastro) as Button
-        idRecupera = findViewById(R.id.idRecuperaSenha) as Button
+        etEmail = findViewById<TextInputEditText>(R.id.idEmailInput)
+        etPassword = findViewById<TextInputEditText>(R.id.idSenhaInput)
+        btnLogin = findViewById<Button>(R.id.btnLog)
+        btnCadatrar = findViewById<Button>(R.id.btnCadastro)
+        idRecupera = findViewById<Button>(R.id.idRecuperaSenha)
+        checkConecta = findViewById<CheckBox>(R.id.btnCheckBox)
 
         auth = FirebaseAuth.getInstance()
 
@@ -58,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         btnLogin!!.setOnClickListener { loginUser() }
 
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
+
+
+
     }
 
     private fun loginUser() {
@@ -89,6 +95,8 @@ class MainActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
+
+
 
 
 }
