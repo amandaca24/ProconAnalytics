@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 class RecuperaActivity : AppCompatActivity() {
     private val TAG = "RecuperaActivity"
     //UI elements
-    private var recEmail: TextInputEditText? = null
-    private var btnRecuperaSenha: Button? = null
+    private lateinit var recEmail: TextInputEditText
+    private lateinit var btnRecuperaSenha: Button
     //Firebase references
     private var auth: FirebaseAuth? = null
 
@@ -26,22 +26,22 @@ class RecuperaActivity : AppCompatActivity() {
     }
 
     private fun initRecupera(){
-        recEmail = findViewById<View>(R.id.recEmail) as TextInputEditText
-        btnRecuperaSenha = findViewById<View>(R.id.btnRecuperaSenha) as Button
+        recEmail = findViewById(R.id.recEmail)
+        btnRecuperaSenha = findViewById(R.id.btnRecuperaSenha)
 
         auth = FirebaseAuth.getInstance()
 
-        btnRecuperaSenha!!.setOnClickListener { enviaRecuperarSenha() }
+        btnRecuperaSenha.setOnClickListener { enviaRecuperarSenha() }
 
     }
 
     private fun enviaRecuperarSenha(){
-        val email = recEmail?.text.toString()
+        val email = recEmail.text.toString()
 
         if (!TextUtils.isEmpty(email)) {
             auth!!.sendPasswordResetEmail(email).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val message = "Email sent."
+                    val message = "Email enviado."
                     Log.d(TAG, message)
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     updateUI()
@@ -51,7 +51,7 @@ class RecuperaActivity : AppCompatActivity() {
                         }
                     }
         } else {
-            Toast.makeText(this, "Enter Email", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Digite o e-mail", Toast.LENGTH_SHORT).show()
         }
     }
 

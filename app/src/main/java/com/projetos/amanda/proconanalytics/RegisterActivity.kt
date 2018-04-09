@@ -15,9 +15,9 @@ import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : AppCompatActivity() {
 
-    private var nomeInput: TextInputEditText?=null
-    private var emailInput: TextInputEditText?=null
-    private var senhaInput: TextInputEditText?=null
+    private lateinit var nomeInput: TextInputEditText
+    private lateinit var emailInput: TextInputEditText
+    private lateinit var senhaInput: TextInputEditText
     private var btnCadastrar: Button?=null
 
 
@@ -28,9 +28,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private val TAG = "RegisterActivity"
     //global variables
-    private var name: String? = null
-    private var email: String? = null
-    private var password: String? = null
+    private lateinit var name: String
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +40,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initFirebase(){
-        nomeInput = findViewById<View>(R.id.nomeInput) as TextInputEditText
-        emailInput = findViewById<View>(R.id.emailInput) as TextInputEditText
-        senhaInput = findViewById<View>(R.id.senhaInput) as TextInputEditText
-        btnCadastrar = findViewById<View>(R.id.btnCadastrar) as Button
+        nomeInput = findViewById(R.id.nomeInput)
+        emailInput = findViewById(R.id.emailInput)
+        senhaInput = findViewById(R.id.senhaInput)
+        btnCadastrar = findViewById(R.id.btnCadastrar)
 
         database = FirebaseDatabase.getInstance()
         databaseReference = database!!.reference!!.child("Users")
@@ -53,18 +53,18 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun criarNovaConta(){
-        name = nomeInput?.text.toString()
-        email = emailInput?.text.toString()
-        password = senhaInput?.text.toString()
+        name = nomeInput.text.toString()
+        email = emailInput.text.toString()
+        password = senhaInput.text.toString()
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-            auth!!.createUserWithEmailAndPassword(email!!, password!!).addOnCompleteListener(this) { task ->
+            auth!!.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val userId = auth!!.currentUser!!.uid
                     //Verify Email
-                    verifyEmail();
+                    verifyEmail()
                     //update user profile information
                     val currentUserDb = databaseReference!!.child(userId)
                     currentUserDb.child("Name").setValue(name)
@@ -88,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     private fun verifyEmail() {
-        val user = auth!!.currentUser;
+        val user = auth!!.currentUser
         user!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {

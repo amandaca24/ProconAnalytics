@@ -31,8 +31,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     private var auth: FirebaseAuth? = null
     private var mGoogleSignInClient: GoogleSignInClient? = null
     //UI elements
-    private var userName: TextView? = null
-    private var userEmail: TextView? = null
+    private lateinit var userName: TextView
+    private lateinit var userEmail: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +60,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         databaseReference = database!!.reference.child("Users")
         auth = FirebaseAuth.getInstance()
 
-        userEmail = findViewById<View>(R.id.userEmail) as TextView
-        userName = findViewById<View>(R.id.userName) as TextView
+        userEmail = findViewById(R.id.userEmail)
+        userName = findViewById(R.id.userName)
     }
 
     override fun onBackPressed() {
@@ -92,12 +92,12 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         super.onStart()
         val user = auth!!.currentUser
         val userReference = databaseReference!!.child(user!!.uid)
-        userEmail!!.text = user.email
-        userName!!.text = user.isEmailVerified.toString()
+        userEmail.text = user.email
+        userName.text = user.isEmailVerified.toString()
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                userName!!.text = snapshot.child("Name").value as String
-                userEmail!!.text = snapshot.child("Email").value as String
+                userName.text = snapshot.child("Name").value as String
+                userEmail.text = snapshot.child("Email").value as String
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
