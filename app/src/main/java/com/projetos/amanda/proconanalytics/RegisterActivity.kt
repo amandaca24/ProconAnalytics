@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private val TAG = "RegisterActivity"
     //global variables
-    private lateinit var name: String
     private lateinit var email: String
     private lateinit var password: String
 
@@ -40,7 +39,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initFirebase(){
-        nomeInput = findViewById(R.id.nomeInput)
         emailInput = findViewById(R.id.emailInput)
         senhaInput = findViewById(R.id.senhaInput)
         btnCadastrar = findViewById(R.id.btnCadastrar)
@@ -53,26 +51,24 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun criarNovaConta(){
-        name = nomeInput.text.toString()
         email = emailInput.text.toString()
         password = senhaInput.text.toString()
 
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
             auth!!.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
+                    Log.d(TAG, "Usuário cadastrado com sucesso!")
                     val userId = auth!!.currentUser!!.uid
                     //Verify Email
                     verifyEmail()
                     //update user profile information
                     val currentUserDb = databaseReference!!.child(userId)
-                    currentUserDb.child("Name").setValue(name)
                     currentUserDb.child("Email").setValue(email)
                     updateUserInfoAndUI()
                 } else {
                             // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Log.w(TAG, "Usuário não cadastrado", task.exception)
                     Toast.makeText(this@RegisterActivity, "Authentication failed.", Toast.LENGTH_SHORT).show()} }
         } else {
             Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
