@@ -3,6 +3,7 @@ package com.projetos.amanda.proconanalytics
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
 import android.text.TextUtils
 import android.util.Log
@@ -19,6 +20,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var emailInput: TextInputEditText
     private lateinit var senhaInput: TextInputEditText
     private var btnCadastrar: Button?=null
+    private lateinit var content: View
 
 
     //Firebase references
@@ -30,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
     //global variables
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var name: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +44,9 @@ class RegisterActivity : AppCompatActivity() {
     private fun initFirebase(){
         emailInput = findViewById(R.id.emailInput)
         senhaInput = findViewById(R.id.senhaInput)
+        nomeInput = findViewById(R.id.nomeInput)
         btnCadastrar = findViewById(R.id.btnCadastrar)
+        content = findViewById(R.id.idRegisterAct)
 
         database = FirebaseDatabase.getInstance()
         databaseReference = database!!.reference!!.child("Users")
@@ -53,25 +58,28 @@ class RegisterActivity : AppCompatActivity() {
     private fun criarNovaConta(){
         email = emailInput.text.toString()
         password = senhaInput.text.toString()
+        name = nomeInput.text.toString()
 
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(name)) {
             auth!!.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "Usuário cadastrado com sucesso!")
+                    Snackbar.make(content, "Usuário cadastrado com sucesso!", Snackbar.LENGTH_LONG).show()
                     val userId = auth!!.currentUser!!.uid
                     //Verify Email
                     verifyEmail()
                     //update user profile information
                     val currentUserDb = databaseReference!!.child(userId)
                     currentUserDb.child("Email").setValue(email)
+                    currentUserDb.child("Name").setValue(name)
                     updateUserInfoAndUI()
                 } else {
                             // If sign in fails, display a message to the user.
                     Log.w(TAG, "Usuário não cadastrado", task.exception)
-                    Toast.makeText(this@RegisterActivity, "Authentication failed.", Toast.LENGTH_SHORT).show()} }
+                    Snackbar.make(content, "Problemas ao cadastrar o usuário, tente novamente", Snackbar.LENGTH_LONG).show()} }
         } else {
-            Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+            Snackbar.make(content, "Preencha todos os campos!", Snackbar.LENGTH_LONG).show()
         }
 
     }
@@ -88,14 +96,12 @@ class RegisterActivity : AppCompatActivity() {
         user!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this@RegisterActivity,
-                                "Verification email sent to " + user.getEmail(),
-                                Toast.LENGTH_SHORT).show()
+                        Snackbar.make(content, "E-mail de verificação enviado para " + user.getEmail(),
+                                Snackbar.LENGTH_LONG).show()
+
                     } else {
                         Log.e(TAG, "sendEmailVerification", task.exception)
-                        Toast.makeText(this@RegisterActivity,
-                                "Failed to send verification email.",
-                                Toast.LENGTH_SHORT).show()
+                        Snackbar.make(content, "Problemas ao enviar e-mail de verificação", Snackbar.LENGTH_LONG).show()
                     }
                 }
     }

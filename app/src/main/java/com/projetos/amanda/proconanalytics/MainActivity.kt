@@ -4,9 +4,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputEditText
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.Toast
@@ -31,8 +33,10 @@ class MainActivity : AppCompatActivity() {
     private var btnCadatrar: Button? = null
     private var idRecupera: Button? = null
     private var checkConecta: CheckBox? = null
+    private lateinit var contentV: View
 
     private var auth: FirebaseAuth? = null
+    private var mAuthListener: FirebaseAuth.AuthStateListener? = null
 
     //var pref: SharedPreferences? = null
 
@@ -56,8 +60,10 @@ class MainActivity : AppCompatActivity() {
         btnCadatrar = findViewById(R.id.btnCadastro)
         idRecupera = findViewById(R.id.idRecuperaSenha)
         checkConecta = findViewById(R.id.btnCheckBox)
+        contentV = findViewById(R.id.idMainAct)
 
         auth = FirebaseAuth.getInstance()
+        mAuthListener = FirebaseAuth.AuthStateListener {  }
 
         btnCadatrar!!
                 .setOnClickListener { startActivity(Intent(this@MainActivity,
@@ -85,12 +91,11 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(this@MainActivity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show()
+                            Snackbar.make(contentV, "Problemas na autenticação do usuário", Snackbar.LENGTH_LONG).show()
                         }
                     }
         } else {
-            Toast.makeText(this, "Enter all details", Toast.LENGTH_SHORT).show()
+            Snackbar.make(contentV, "Preencha todos os campos", Snackbar.LENGTH_LONG).show()
         }
     }
 

@@ -10,18 +10,15 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.app_bar_nav.*
-import org.w3c.dom.Text
 
 class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -93,7 +90,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         val user = auth!!.currentUser
         val userReference = databaseReference!!.child(user!!.uid)
         userEmail.text = user.email
-        userName.text = user.isEmailVerified.toString()
+        userName.text = user.displayName
         userReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userName.text = snapshot.child("Name").value as String
