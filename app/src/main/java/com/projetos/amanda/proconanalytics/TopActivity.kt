@@ -26,6 +26,8 @@ class TopActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        return true
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

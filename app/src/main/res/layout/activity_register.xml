@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@+id/senhaInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/nomeInput">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/senhaInput" />
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/nomeInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"

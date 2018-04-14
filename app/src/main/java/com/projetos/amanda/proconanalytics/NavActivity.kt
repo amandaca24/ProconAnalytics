@@ -119,9 +119,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
             id.nav_about_analytics -> {
 
             }
-            id.nav_share -> {
 
-            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
