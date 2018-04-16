@@ -4,7 +4,7 @@
     <string name="sobrePA">Aplicativo de pesquisa de preços do Procon João Pessoa</string>
     <string name="dashboard_title">Dashboard</string>
     <string name="dashboard_intro">Dashboard com gráficos de análise dos dados de todas as pesquisas de preço do Procon</string>
-    <string name="top10_title">Top 10</string>
+    <string name="top10_title">Top 10:</string>
     <string name="idPosto">Nome do Posto</string>
     <string name="idPreco">Preço Combustível</string>
     <string name="idPosicao">Posição no ranking</string>
@@ -44,4 +44,11 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="config">Configurações</string>
+    <string name="save">Salvar</string>
+    <string-array name="top10Array">
+        <item>Por bairro</item>
+        <item>Por combustível</item>
+        <item>Por menor preço</item>
+        <item>Por maior preço</item>
+    </string-array>
 </resources>

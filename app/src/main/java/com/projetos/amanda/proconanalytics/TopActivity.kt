@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import com.projetos.amanda.proconanalytics.models.Posto
-import com.projetos.amanda.proconanalytics.MyAdapter
+import com.projetos.amanda.proconanalytics.adapters.MyAdapter
 import kotlinx.android.synthetic.main.activity_top.*
 
 class TopActivity : AppCompatActivity() {
@@ -41,7 +40,7 @@ class TopActivity : AppCompatActivity() {
             postos.add(Posto("Nome ${i}", "Preço ${i}", "Posição ${i}"))
         }
 
-        val myAdapter: RecyclerView.Adapter<*> = MyAdapter(this@TopActivity, postos){
+        val myAdapter: RecyclerView.Adapter<*> = MyAdapter(this@TopActivity, postos) {
             Toast.makeText(this@TopActivity, it.toString(), Toast.LENGTH_SHORT).show()
         }
 

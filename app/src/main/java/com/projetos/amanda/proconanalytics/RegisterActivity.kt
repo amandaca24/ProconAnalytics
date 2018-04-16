@@ -9,7 +9,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -96,9 +95,8 @@ class RegisterActivity : AppCompatActivity() {
         user!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Snackbar.make(content, "E-mail de verificação enviado para " + user.getEmail(),
+                        Snackbar.make(content, """E-mail de verificação enviado para ${user.getEmail()}""",
                                 Snackbar.LENGTH_LONG).show()
-
                     } else {
                         Log.e(TAG, "sendEmailVerification", task.exception)
                         Snackbar.make(content, "Problemas ao enviar e-mail de verificação", Snackbar.LENGTH_LONG).show()

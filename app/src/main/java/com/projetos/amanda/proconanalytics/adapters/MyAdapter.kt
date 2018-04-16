@@ -1,10 +1,11 @@
-package com.projetos.amanda.proconanalytics
+package com.projetos.amanda.proconanalytics.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.projetos.amanda.proconanalytics.R
 import com.projetos.amanda.proconanalytics.models.Posto
 import kotlinx.android.synthetic.main.itemlist.view.*
 
