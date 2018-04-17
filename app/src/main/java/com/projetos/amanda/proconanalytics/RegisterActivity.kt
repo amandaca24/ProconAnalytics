@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
     private var database: FirebaseDatabase? = null
     private var auth: FirebaseAuth? = null
 
-    private val TAG = "RegisterActivity"
+    private val TAG = "Register_Activity"
     //global variables
     private lateinit var email: String
     private lateinit var password: String
@@ -41,9 +41,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun initFirebase(){
-        emailInput = findViewById(R.id.emailInput)
-        senhaInput = findViewById(R.id.senhaInput)
-        nomeInput = findViewById(R.id.nomeInput)
+        emailInput = findViewById(R.id.emailInputTI)
+        senhaInput = findViewById(R.id.senhaInputTI)
+        nomeInput = findViewById(R.id.nomeInputTI)
         btnCadastrar = findViewById(R.id.btnCadastrar)
         content = findViewById(R.id.idRegisterAct)
 
