@@ -11,9 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.projetos.amanda.proconanalytics.R.*
@@ -26,7 +23,6 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     private var databaseReference: DatabaseReference? = null
     private var database: FirebaseDatabase? = null
     private var auth: FirebaseAuth? = null
-    private var mGoogleSignInClient: GoogleSignInClient? = null
     //UI elements
     private lateinit var userName: TextView
     private lateinit var userEmail: TextView
@@ -130,13 +126,6 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         // Firebase sign out
         auth!!.signOut()
 
-        // Google revoke access
-        mGoogleSignInClient!!.revokeAccess().addOnCompleteListener(this,
-                object : OnCompleteListener<Void> {
-                    override fun onComplete(task: Task<Void>) {
-                        startActivity(Intent(this@NavActivity, MainActivity::class.java))
-                    }
-                })
     }
 
 

@@ -1,7 +1,6 @@
 package com.projetos.amanda.proconanalytics
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -20,8 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "LoginActivity"
-    private val PREF_NAME: String = "MainActivityPref"
-    private val PREF_TOKEN: String = "Token"
+    //private val PREF_NAME: String = "MainActivityPref"
+    //private val PREF_TOKEN: String = "Token"
 
     //global variables
     private var email: String? = null
