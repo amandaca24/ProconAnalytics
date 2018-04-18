@@ -1,21 +1,21 @@
 package com.projetos.amanda.proconanalytics
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
-import com.projetos.amanda.proconanalytics.models.SettingsModel
+import com.projetos.amanda.proconanalytics.constants.Constants
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var itemTV:TextView
-    private lateinit var itemET:EditText
     private lateinit var content: View
     private lateinit var etChoice: EditText
     private lateinit var btSave: Button
+    private lateinit var btVoltar: Button
 
     private var mAuth: FirebaseAuth? = null
 
@@ -26,8 +26,14 @@ class SettingsActivity : AppCompatActivity() {
         content = findViewById(R.id.idSettings)
         etChoice = findViewById(R.id.etChoice)
         btSave = findViewById(R.id.btnSave)
+        btVoltar = findViewById(R.id.btnVoltar)
 
-        btSave.setOnClickListener { getUserConfig() }
+        btSave.setOnClickListener { saveUserConfig(Constants.SP_PREFERENCES, etChoice.text.toString())
+            Snackbar.make(content, "Preferências salvas", Snackbar.LENGTH_LONG).show()
+
+        }
+
+        btVoltar.setOnClickListener { voltarTela() }
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -39,8 +45,6 @@ class SettingsActivity : AppCompatActivity() {
 
         spTop.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                itemTV.text = itemET.text.toString()
-                itemET.setText("")
                 if (parent != null) {
                     etChoice.setText(parent.getItemAtPosition(position).toString())
                 }
@@ -53,14 +57,20 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserConfig(){
-        val userId = mAuth!!.currentUser!!.uid
+    private fun saveUserConfig(key:String, value: String){
+        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.settings", android.content.Context.MODE_PRIVATE)
 
-        val setTop10 = SettingsModel()
-        setTop10.setTop = etChoice.text.toString()
-        setTop10.userId = userId
+        val editor = pref.edit()
 
-        setTop10.save()
+        editor.putString(key, value)
+
+        editor.apply()
+    }
+
+    private fun voltarTela(){
+        val intent = Intent(this@SettingsActivity, NavActivity::class.java)
+        startActivity(intent)
+    }
 
     }
-}
+

@@ -5,9 +5,31 @@
     android:id="@+id/idRegisterAct"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fundo"
     tools:context=".RegisterActivity"
     tools:layout_editor_absoluteY="81dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/nomeInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/emailInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/nomeInputTI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nome"
+            android:inputType="textPersonName" />
+    </android.support.design.widget.TextInputLayout>
 
 
     <android.support.design.widget.TextInputLayout
@@ -19,13 +41,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:background="@color/fundoBranco"
         app:layout_constraintBottom_toTopOf="@+id/senhaInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nomeInput">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/emailInputTI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/emailLogin"
@@ -41,13 +63,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:background="@color/fundoBranco"
         app:layout_constraintBottom_toTopOf="@+id/btnCadastrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailInput">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/senhaInputTI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
@@ -70,27 +92,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/senhaInput" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nomeInput"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="58dp"
-        android:background="@color/fundoBranco"
-        app:layout_constraintBottom_toTopOf="@+id/emailInput"
+        android:layout_marginTop="16dp"
+        android:text="@string/cadastrar"
+        android:textAlignment="center"
+        android:textSize="12pt"
+        android:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/nome"
-            android:inputType="textPersonName" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

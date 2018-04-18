@@ -19,11 +19,6 @@
             android:title="@string/map" />
 
         <item
-            android:id="@+id/idPref"
-            android:icon="@drawable/ic_face_black_24dp"
-            android:title="@string/preferences" />
-
-        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_account_box_black_24dp"
             android:title="@string/logout" />

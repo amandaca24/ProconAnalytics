@@ -45,6 +45,7 @@
     <string name="google">Google</string>
     <string name="config">Configurações</string>
     <string name="save">Salvar</string>
+    <string name="voltar">Voltar</string>
     <string-array name="top10Array">
         <item>Por bairro</item>
         <item>Por combustível</item>

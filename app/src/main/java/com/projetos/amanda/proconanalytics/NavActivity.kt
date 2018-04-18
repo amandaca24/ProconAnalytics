@@ -24,8 +24,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     private var database: FirebaseDatabase? = null
     private var auth: FirebaseAuth? = null
     //UI elements
-    private lateinit var userName: TextView
-    private lateinit var userEmail: TextView
+    private var userName: TextView? = null
+    private var userEmail: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +55,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
         userEmail = findViewById(R.id.userEmail)
         userName = findViewById(R.id.userName)
+
     }
 
     override fun onBackPressed() {
@@ -72,29 +73,15 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        if(item.itemId == R.id.action_settings){
+            val intent = Intent(applicationContext, SettingsActivity::class.java)
+            startActivity(intent)
         }
+
+        return true
+
     }
 
-    override fun onStart() {
-        super.onStart()
-        val user = auth!!.currentUser
-        val userReference = databaseReference!!.child(user!!.uid)
-        userEmail.text = user.email
-        userName.text = user.displayName
-        userReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                userName.text = snapshot.child("Name").value as String
-                userEmail.text = snapshot.child("Email").value as String
-            }
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.

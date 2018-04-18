@@ -33,6 +33,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var password: String
     private lateinit var name: String
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)

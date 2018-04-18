@@ -33,17 +33,17 @@ class TopActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top)
 
-        rvTopId.setHasFixedSize(true)
+       // rvTopId.setHasFixedSize(true)
 
-        val postos:ArrayList<Posto> = ArrayList<Posto>()
-        for (i in 0..10){
-            postos.add(Posto("Nome ${i}", "Preço ${i}", "Posição ${i}"))
-        }
+        //val postos:ArrayList<Posto> = ArrayList<Posto>()
+        //for (i in 0..10){
+            //postos.add(Posto("Nome ${i}", "Preço ${i}", "Posição ${i}"))
+        //}
 
-        val myAdapter: RecyclerView.Adapter<*> = MyAdapter(this@TopActivity, postos) {
-            Toast.makeText(this@TopActivity, it.toString(), Toast.LENGTH_SHORT).show()
-        }
+        //val myAdapter: RecyclerView.Adapter<*> = MyAdapter(this@TopActivity, postos) {
+            //Toast.makeText(this@TopActivity, it.toString(), Toast.LENGTH_SHORT).show()
+        //}
 
-        rvTopId.adapter = myAdapter
+        //rvTopId.adapter = myAdapter
     }
 }

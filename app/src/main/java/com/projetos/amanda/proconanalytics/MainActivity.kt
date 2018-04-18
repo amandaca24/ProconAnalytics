@@ -11,15 +11,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import com.google.firebase.auth.FirebaseAuth
-
-
+import com.google.firebase.auth.FirebaseUser
+import com.projetos.amanda.proconanalytics.constants.Constants
+//import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "LoginActivity"
-    //private val PREF_NAME: String = "MainActivityPref"
-    //private val PREF_TOKEN: String = "Token"
 
     //global variables
     private var email: String? = null
@@ -30,21 +29,17 @@ class MainActivity : AppCompatActivity() {
     private var btnLogin: Button? = null
     private var btnCadatrar: Button? = null
     private var idRecupera: Button? = null
-    private var checkConecta: CheckBox? = null
+    private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
 
     private var auth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
-
-    //var pref: SharedPreferences? = null
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val pref = this.getSharedPreferences("MainActivityPref", 0)
 
         initLogin()
 
@@ -52,13 +47,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLogin(){
 
-        etEmail = findViewById(R.id.idEmailInput)
-        etPassword = findViewById(R.id.idSenhaInput)
+        etEmail = findViewById(R.id.idEmailInputTI)
+        etPassword = findViewById(R.id.idSenhaInputTI)
         btnLogin = findViewById(R.id.btnLog)
         btnCadatrar = findViewById(R.id.btnCadastro)
         idRecupera = findViewById(R.id.idRecuperaSenha)
-        checkConecta = findViewById(R.id.btnCheckBox)
         contentV = findViewById(R.id.idMainAct)
+        checkConecta = findViewById(R.id.btnCheckBox)
 
         auth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener {  }
@@ -71,6 +66,15 @@ class MainActivity : AppCompatActivity() {
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
 
+        val checkBox = CheckBox(this)
+        
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if(checkConecta.isChecked){
+                btnGetUserSP()
+
+            }
+        }
 
     }
 
@@ -85,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             // Sign in success, update UI with signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
+                            val userId = auth!!.currentUser!!.uid
+                            saveUserSP(Constants.SP_TOKEN_USER, value = userId)
                             updateUI()
                         } else {
                             // If sign in fails, display a message to the user.
@@ -103,7 +109,33 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun saveUserSP(key:String, value: String){
+        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
 
+        val editor = pref.edit()
+
+
+        editor.putString(key, value)
+
+        editor.apply()
+
+    }
+
+    private fun getUserSP(key: String){
+        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+        val value = pref.getString(key, "Não foi encontrado")
+
+        Snackbar.make(contentV, value, Snackbar.LENGTH_LONG).show()
+
+    }
+
+    private fun btnGetUserSP(){
+        getUserSP(Constants.SP_TOKEN_USER)
+        val intent = Intent(this@MainActivity, NavActivity::class.java)
+        startActivity(intent)
+    }
 
 
 }
+
+
