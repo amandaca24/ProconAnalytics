@@ -26,7 +26,7 @@ class MyAdapter constructor(val context: Context, private val postos: ArrayList<
 
             holder.itemView.idNomePosto.text = posto.nome
             holder.itemView.idPreco.text = posto.valor
-            holder.itemView.idPosition.text = posto.posicao
+            holder.itemView.idBairro.text = posto.bairro
             holder.itemView.setOnClickListener{clickListener(postos[position])}
         }
     }

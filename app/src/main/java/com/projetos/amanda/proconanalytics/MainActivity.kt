@@ -1,6 +1,7 @@
 package com.projetos.amanda.proconanalytics
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
 
+
     private var auth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
 
@@ -40,6 +42,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val checkBox = CheckBox(this)
+
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if(checkConecta.isChecked){
+                btnGetUserSP()
+                startActivity(Intent(this@MainActivity, NavActivity::class.java))
+
+            }
+        }
 
         initLogin()
 
@@ -66,16 +78,6 @@ class MainActivity : AppCompatActivity() {
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
 
-        val checkBox = CheckBox(this)
-        
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if(checkConecta.isChecked){
-                btnGetUserSP()
-
-            }
-        }
-
     }
 
     private fun loginUser() {
@@ -92,6 +94,7 @@ class MainActivity : AppCompatActivity() {
                             val userId = auth!!.currentUser!!.uid
                             saveUserSP(Constants.SP_TOKEN_USER, value = userId)
                             updateUI()
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "signInWithEmail:failure", task.exception)
@@ -129,11 +132,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun btnGetUserSP(){
-        getUserSP(Constants.SP_TOKEN_USER)
-        val intent = Intent(this@MainActivity, NavActivity::class.java)
-        startActivity(intent)
+    private fun btnGetUserSP() {
+      getUserSP(Constants.SP_TOKEN_USER)
+
     }
+
 
 
 }

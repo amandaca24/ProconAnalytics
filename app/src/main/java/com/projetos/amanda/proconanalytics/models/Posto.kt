@@ -8,9 +8,8 @@ class Posto(): SugarRecord (){
     var bairro:String = ""
     var bandeira:String = ""
     var nome:String = ""
-    var data:Date? = null
+    var produto:String = ""
     var valor:String = ""
     var zona:String = ""
-    var posicao:String = ""
 
 }
