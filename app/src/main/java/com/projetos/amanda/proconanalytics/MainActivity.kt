@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
 
+    private var userPref:String?=null
+
 
     private var auth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -41,17 +43,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val checkBox = CheckBox(this)
-
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if(checkConecta.isChecked){
-                btnGetUserSP()
-                startActivity(Intent(this@MainActivity, NavActivity::class.java))
-
-            }
-        }
 
         initLogin()
 
@@ -75,9 +66,14 @@ class MainActivity : AppCompatActivity() {
                         RegisterActivity::class.java)) }
         btnLogin!!.setOnClickListener { loginUser() }
 
+
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
+        //userPref = btnGetUserSP().toString()
 
+        //if(userPref != null){
+            //startActivity(Intent(this@MainActivity, NavActivity::class.java))
+        //}
     }
 
     private fun loginUser() {
@@ -92,7 +88,10 @@ class MainActivity : AppCompatActivity() {
                             // Sign in success, update UI with signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
                             val userId = auth!!.currentUser!!.uid
-                            saveUserSP(Constants.SP_TOKEN_USER, value = userId)
+
+                            if(checkConecta.isChecked){
+                                saveUserSP(Constants.SP_TOKEN_USER, value = userId)
+                            }
                             updateUI()
 
                         } else {

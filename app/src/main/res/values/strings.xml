@@ -7,9 +7,11 @@
     <string name="top10_title">Top 10:</string>
     <string name="idPosto">Nome do Posto</string>
     <string name="idPreco">Preço Combustível</string>
-    <string name="idPosicao">Posição no ranking</string>
+    <string name="produto">Produto</string>
+    <string name="idBairro">Bairro</string>
+    <string name="idBandeira">Bandeira</string>
     <string name="top10_intro">Ranking com os 10 menores preços por tipo de combustível</string>
-    <string name="preferences">Salve suas preferências. Cadastra-se e faça login para ter acesso a conteúdo customizado</string>
+    <string name="preferences">Salve suas preferências</string>
     <string name="mais_info">E mais...</string>
     <string name="maps">Veja no mapa os postos com menor preço</string>
     <string name="mlprocon">Procon Analytics</string>
@@ -46,6 +48,7 @@
     <string name="config">Configurações</string>
     <string name="save">Salvar</string>
     <string name="voltar">Voltar</string>
+    <string name="confUser">Configurações de conta</string>
     <string-array name="top10Array">
         <item>Por bairro</item>
         <item>Por combustível</item>

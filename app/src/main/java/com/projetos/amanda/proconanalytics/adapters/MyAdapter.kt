@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.projetos.amanda.proconanalytics.R
+import com.projetos.amanda.proconanalytics.models.FbData
 import com.projetos.amanda.proconanalytics.models.Posto
 import kotlinx.android.synthetic.main.itemlist.view.*
 
-class MyAdapter constructor(val context: Context, private val postos: ArrayList<Posto>?, val clickListener: (Posto) ->Unit):
+class MyAdapter constructor(val context: Context, private val postos: ArrayList<FbData>?, val clickListener:(FbData)  -> Unit):
         RecyclerView.Adapter<MyAdapter.ViewHolder>(){
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){}
 
@@ -24,10 +25,13 @@ class MyAdapter constructor(val context: Context, private val postos: ArrayList<
         postos?.let {
             var posto = postos[position]
 
-            holder.itemView.idNomePosto.text = posto.nome
-            holder.itemView.idPreco.text = posto.valor
-            holder.itemView.idBairro.text = posto.bairro
-            holder.itemView.setOnClickListener{clickListener(postos[position])}
+            holder.itemView.idNomePosto.text = posto.nomeFB
+            holder.itemView.idPreco.text = posto.valorFB
+            holder.itemView.idBairro.text = posto.bairroFB
+            holder.itemView.idBandeira.text = posto.bandeiraFB
+            holder.itemView.idProduto.text = posto.produtoFB
+            holder.itemView.setOnClickListener { clickListener(postos[position]) }
+
         }
     }
 

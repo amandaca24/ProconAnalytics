@@ -7,15 +7,20 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.projetos.amanda.proconanalytics.constants.Constants
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var content: View
-    private lateinit var etChoice: EditText
+    private lateinit var etChoice: TextView
     private lateinit var btSave: Button
     private lateinit var btVoltar: Button
+    private var nome:TextView? = null
+    private var email:TextView? = null
+    private var passwrd:TextView? = null
+
 
     private var mAuth: FirebaseAuth? = null
 
@@ -27,6 +32,14 @@ class SettingsActivity : AppCompatActivity() {
         etChoice = findViewById(R.id.etChoice)
         btSave = findViewById(R.id.btnSave)
         btVoltar = findViewById(R.id.btnVoltar)
+        nome = findViewById(R.id.confNome)
+        email = findViewById(R.id.confEmail)
+        passwrd = findViewById(R.id.confSenha)
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        getFBUser(user)
+
 
         btSave.setOnClickListener { saveUserConfig(Constants.SP_PREFERENCES, etChoice.text.toString())
             Snackbar.make(content, "Preferências salvas", Snackbar.LENGTH_LONG).show()
@@ -34,8 +47,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         btVoltar.setOnClickListener { voltarTela() }
-
-        mAuth = FirebaseAuth.getInstance()
 
 
 
@@ -70,6 +81,17 @@ class SettingsActivity : AppCompatActivity() {
     private fun voltarTela(){
         val intent = Intent(this@SettingsActivity, NavActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun getFBUser(user: FirebaseUser?){
+
+        if(user != null){
+            nome!!.text = user.displayName
+            email!!.text = user.email
+
+            val uid = user.uid
+        }
+
     }
 
     }

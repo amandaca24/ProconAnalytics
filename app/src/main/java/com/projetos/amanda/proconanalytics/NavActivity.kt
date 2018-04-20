@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
@@ -20,8 +21,6 @@ import kotlinx.android.synthetic.main.app_bar_nav.*
 class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //Firebase references
-    private var databaseReference: DatabaseReference? = null
-    private var database: FirebaseDatabase? = null
     private var auth: FirebaseAuth? = null
     //UI elements
     private var userName: TextView? = null
@@ -32,7 +31,12 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         setContentView(layout.activity_nav)
         setSupportActionBar(toolbar)
 
-        initUserFirebase()
+        userEmail = findViewById(R.id.userEmail)
+        userName = findViewById(R.id.userName)
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        initUserFirebase(user)
 
 
         fab.setOnClickListener { view ->
@@ -48,13 +52,14 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    private fun initUserFirebase(){
-        database = FirebaseDatabase.getInstance()
-        databaseReference = database!!.reference.child("Users")
-        auth = FirebaseAuth.getInstance()
+    private fun initUserFirebase(user: FirebaseUser?){
 
-        userEmail = findViewById(R.id.userEmail)
-        userName = findViewById(R.id.userName)
+        if(user != null){
+            userEmail!!.text = user.email
+            userName!!.text = user.displayName
+        }
+
+
 
     }
 
