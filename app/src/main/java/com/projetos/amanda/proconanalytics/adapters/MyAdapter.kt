@@ -7,23 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.projetos.amanda.proconanalytics.R
 import com.projetos.amanda.proconanalytics.models.FbData
-import com.projetos.amanda.proconanalytics.models.Posto
 import kotlinx.android.synthetic.main.itemlist.view.*
 
-class MyAdapter constructor(val context: Context, private val postos: ArrayList<FbData>?, val clickListener:(FbData)  -> Unit):
+class MyAdapter constructor(val context: Context, private val postos: ArrayList<FbData>?, private val clickListener:(FbData)  -> Unit):
         RecyclerView.Adapter<MyAdapter.ViewHolder>(){
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){}
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.itemlist, parent, false)
-        val vh = ViewHolder(v)
 
-        return vh
+        return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         postos?.let {
-            var posto = postos[position]
+            val posto = postos[position]
 
             holder.itemView.idNomePosto.text = posto.nomeFB
             holder.itemView.idPreco.text = posto.valorFB
@@ -35,10 +33,5 @@ class MyAdapter constructor(val context: Context, private val postos: ArrayList<
         }
     }
 
-    override fun getItemCount(): Int {
-        if(postos != null){
-            return postos.size
-        }else
-            return 0
-    }
+    override fun getItemCount(): Int = postos?.size ?: 0
 }

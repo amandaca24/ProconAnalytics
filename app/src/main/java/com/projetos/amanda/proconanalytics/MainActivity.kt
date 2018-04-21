@@ -1,7 +1,6 @@
 package com.projetos.amanda.proconanalytics
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -12,14 +11,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.projetos.amanda.proconanalytics.constants.Constants
 //import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = "LoginActivity"
+    private val tagErro = "LoginActivity"
 
     //global variables
     private var email: String? = null
@@ -33,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
 
-    private var userPref:String?=null
+    private var vazio:String = ""
 
 
     private var auth: FirebaseAuth? = null
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initLogin()
+            initLogin()
 
     }
 
@@ -69,11 +67,8 @@ class MainActivity : AppCompatActivity() {
 
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
-        //userPref = btnGetUserSP().toString()
+        getUserSP(vazio)
 
-        //if(userPref != null){
-            //startActivity(Intent(this@MainActivity, NavActivity::class.java))
-        //}
     }
 
     private fun loginUser() {
@@ -86,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success")
+                            Log.d(tagErro, "signInWithEmail:success")
                             val userId = auth!!.currentUser!!.uid
 
                             if(checkConecta.isChecked){
@@ -96,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.e(TAG, "signInWithEmail:failure", task.exception)
+                            Log.e(tagErro, "signInWithEmail:failure", task.exception)
                             Snackbar.make(contentV, "Problemas na autenticação do usuário", Snackbar.LENGTH_LONG).show()
                         }
                     }
@@ -125,18 +120,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserSP(key: String){
         val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
-        val value = pref.getString(key, "Não foi encontrado")
 
-        Snackbar.make(contentV, value, Snackbar.LENGTH_LONG).show()
-
-    }
-
-    private fun btnGetUserSP() {
-      getUserSP(Constants.SP_TOKEN_USER)
+        if(key == Constants.SP_TOKEN_USER){
+            pref.getString(key, "")
+            startActivity(Intent(this@MainActivity, NavActivity::class.java))
+        }
 
     }
-
-
 
 }
 

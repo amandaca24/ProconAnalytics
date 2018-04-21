@@ -22,8 +22,6 @@ class SettingsActivity : AppCompatActivity() {
     private var passwrd:TextView? = null
 
 
-    private var mAuth: FirebaseAuth? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -89,7 +87,6 @@ class SettingsActivity : AppCompatActivity() {
             nome!!.text = user.displayName
             email!!.text = user.email
 
-            val uid = user.uid
         }
 
     }

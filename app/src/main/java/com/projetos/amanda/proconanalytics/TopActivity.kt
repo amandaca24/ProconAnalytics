@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.google.firebase.database.*
 import com.projetos.amanda.proconanalytics.adapters.MyAdapter
 import com.projetos.amanda.proconanalytics.models.FbData
@@ -41,15 +40,12 @@ class TopActivity : AppCompatActivity() {
        rvTopId.setHasFixedSize(true)
 
         mFirebaseDatabase = FirebaseDatabase.getInstance()
-        mDataReference = mFirebaseDatabase!!.getReference()
+        mDataReference = mFirebaseDatabase!!.reference
 
-        //val postos:ArrayList<FbData> = ArrayList<FbData>()
-        //for (i in 0..10){
-            //postos.add(Posto("Nome ${i}", "Preço ${i}", "Posição ${i}"))
-        //}
+        getDataFB()
 
         val myAdapter: RecyclerView.Adapter<*> = MyAdapter(this@TopActivity, postos) {
-            getDataFB()
+
         }
 
         rvTopId.adapter = myAdapter
@@ -58,7 +54,7 @@ class TopActivity : AppCompatActivity() {
 
     private fun getDataFB(){
 
-        var dataReference = FirebaseDatabase.getInstance().getReference("Pesquisas")
+        val dataReference = FirebaseDatabase.getInstance().getReference("Pesquisas")
 
         val query = dataReference!!.limitToLast(10).orderByChild("valor")
 

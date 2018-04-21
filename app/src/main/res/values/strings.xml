@@ -12,7 +12,6 @@
     <string name="idBandeira">Bandeira</string>
     <string name="top10_intro">Ranking com os 10 menores preços por tipo de combustível</string>
     <string name="preferences">Salve suas preferências</string>
-    <string name="mais_info">E mais...</string>
     <string name="maps">Veja no mapa os postos com menor preço</string>
     <string name="mlprocon">Procon Analytics</string>
     <string name="contato">mlprocon@procon.jp</string>
@@ -29,7 +28,7 @@
     <string name="checkLogin">Manter conectado</string>
     <string name="buttonLogin">Entrar</string>
     <string name="cadastrar">Cadastrar</string>
-    <string name="title_activity_nav">NavActivity</string>
+    <string name="title_activity_nav">Procon Analytics</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

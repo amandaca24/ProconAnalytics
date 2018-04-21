@@ -52,16 +52,6 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    private fun initUserFirebase(user: FirebaseUser?){
-
-        if(user != null){
-            userEmail!!.text = user.email
-            userName!!.text = user.displayName
-        }
-
-
-
-    }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -120,6 +110,13 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
     }
 
+    private fun initUserFirebase(user: FirebaseUser?){
 
+        if(user != null){
+            userEmail!!.text = user.email
+            userName!!.text = user.displayName
+        }
+
+    }
 
 }
