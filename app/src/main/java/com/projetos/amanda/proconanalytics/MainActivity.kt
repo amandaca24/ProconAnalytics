@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-            initLogin()
+        initLogin()
+
 
     }
 
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
         getUserSP(vazio)
+
 
     }
 
@@ -124,6 +126,8 @@ class MainActivity : AppCompatActivity() {
         if(key == Constants.SP_TOKEN_USER){
             pref.getString(key, "")
             startActivity(Intent(this@MainActivity, NavActivity::class.java))
+        }else{
+            initLogin()
         }
 
     }
