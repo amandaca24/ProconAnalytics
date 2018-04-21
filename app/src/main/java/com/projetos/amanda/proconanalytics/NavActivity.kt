@@ -13,7 +13,6 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
 import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.app_bar_nav.*
@@ -22,9 +21,12 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
     //Firebase references
     private var auth: FirebaseAuth? = null
+
     //UI elements
-    private var userName: TextView? = null
-    private var userEmail: TextView? = null
+    private lateinit var userName: TextView
+    private lateinit var userEmail: TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +36,9 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         userEmail = findViewById(R.id.userEmail)
         userName = findViewById(R.id.userName)
 
-        val user = FirebaseAuth.getInstance().currentUser
+        auth = FirebaseAuth.getInstance()
 
-        initUserFirebase(user)
+
 
 
         fab.setOnClickListener { view ->
@@ -50,6 +52,14 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+       val user = auth!!.currentUser
+
+        initUserFirebase(user)
     }
 
 
@@ -111,11 +121,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     }
 
     private fun initUserFirebase(user: FirebaseUser?){
-
-        if(user != null){
-            userEmail!!.text = user.email
-            userName!!.text = user.displayName
-        }
+        userEmail.text = user!!.email
+        userName.text = user.displayName
 
     }
 

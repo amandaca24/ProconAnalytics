@@ -7,14 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase.*
 import com.projetos.amanda.proconanalytics.adapters.MyAdapter
 import com.projetos.amanda.proconanalytics.models.FbData
 import kotlinx.android.synthetic.main.activity_top.*
 
 class TopActivity : AppCompatActivity() {
 
-    private var mFirebaseDatabase: FirebaseDatabase? = null
-    private var mDataReference: DatabaseReference? = null
     private var postos: ArrayList<FbData>? = null
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -39,8 +38,6 @@ class TopActivity : AppCompatActivity() {
 
        rvTopId.setHasFixedSize(true)
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance()
-        mDataReference = mFirebaseDatabase!!.reference
 
         getDataFB()
 
@@ -54,7 +51,7 @@ class TopActivity : AppCompatActivity() {
 
     private fun getDataFB(){
 
-        val dataReference = FirebaseDatabase.getInstance().getReference("Pesquisas")
+        val dataReference = getInstance().getReference("Pesquisas")
 
         val query = dataReference!!.limitToLast(10).orderByChild("valor")
 

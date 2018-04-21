@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.projetos.amanda.proconanalytics.constants.Constants
 //import kotlinx.android.synthetic.main.activity_main.*
 
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
 
-        getUserSP(vazio)
+        //getUserSP(vazio)
 
 
     }
