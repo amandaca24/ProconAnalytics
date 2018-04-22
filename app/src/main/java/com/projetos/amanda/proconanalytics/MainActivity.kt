@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.projetos.amanda.proconanalytics.constants.Constants
+
 //import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
 
-    private var vazio:String = ""
+    //private var vazio:String = ""
 
 
     private var auth: FirebaseAuth? = null
@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
+
         val intent = Intent(this@MainActivity, NavActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getUserSP(key: String){
+    /*private fun getUserSP(key: String){
         val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
 
         if(key == Constants.SP_TOKEN_USER){
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             initLogin()
         }
 
-    }
+    }*/
 
 }
 
