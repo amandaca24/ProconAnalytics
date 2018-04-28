@@ -157,4 +157,12 @@
         app:layout_constraintHorizontal_bias="0.154"
         app:layout_constraintStart_toEndOf="@+id/tvForgot" />
 
+    <ProgressBar
+        android:id="@+id/pgBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="239dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -10,7 +10,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import com.google.firebase.auth.FirebaseAuth
+import android.widget.ProgressBar
+import com.google.firebase.auth.*
+import com.google.firebase.database.FirebaseDatabase
 import com.projetos.amanda.proconanalytics.constants.Constants
 
 //import kotlinx.android.synthetic.main.activity_main.*
@@ -31,8 +33,7 @@ class MainActivity : AppCompatActivity() {
     private var idRecupera: Button? = null
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
-
-    //private var vazio:String = ""
+    private lateinit var mProgressBar: ProgressBar
 
 
     private var auth: FirebaseAuth? = null
@@ -43,12 +44,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initLogin()
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("Disconectado!")
 
+
+        getUserSP(Constants.SP_TOKEN_USER)
 
     }
 
     private fun initLogin(){
+
+
 
         etEmail = findViewById(R.id.idEmailInputTI)
         etPassword = findViewById(R.id.idSenhaInputTI)
@@ -57,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         idRecupera = findViewById(R.id.idRecuperaSenha)
         contentV = findViewById(R.id.idMainAct)
         checkConecta = findViewById(R.id.btnCheckBox)
+        mProgressBar = findViewById(R.id.pgBar)
 
         auth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener {  }
@@ -64,12 +71,13 @@ class MainActivity : AppCompatActivity() {
         btnCadatrar!!
                 .setOnClickListener { startActivity(Intent(this@MainActivity,
                         RegisterActivity::class.java)) }
-        btnLogin!!.setOnClickListener { loginUser() }
+        btnLogin!!.setOnClickListener { loginUser()
+            mProgressBar.progress = 20
+            mProgressBar.secondaryProgress = 50
+        }
 
 
         idRecupera!!.setOnClickListener{ startActivity(Intent(this@MainActivity, RecuperaActivity::class.java))}
-
-        //getUserSP(vazio)
 
 
     }
@@ -86,10 +94,10 @@ class MainActivity : AppCompatActivity() {
                             // Sign in success, update UI with signed-in user's information
                             Log.d(tagErro, "signInWithEmail:success")
                             val userId = auth!!.currentUser!!.uid
-
                             if(checkConecta.isChecked){
                                 saveUserSP(Constants.SP_TOKEN_USER, value = userId)
                             }
+
                             updateUI()
 
                         } else {
@@ -101,10 +109,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             Snackbar.make(contentV, "Preencha todos os campos", Snackbar.LENGTH_LONG).show()
         }
+
     }
 
     private fun updateUI() {
-
         val intent = Intent(this@MainActivity, NavActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
@@ -115,24 +123,27 @@ class MainActivity : AppCompatActivity() {
 
         val editor = pref.edit()
 
-
         editor.putString(key, value)
 
         editor.apply()
 
     }
 
-    /*private fun getUserSP(key: String){
+    private fun getUserSP(key: String){
+
         val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
 
-        if(key == Constants.SP_TOKEN_USER){
-            pref.getString(key, "")
-            startActivity(Intent(this@MainActivity, NavActivity::class.java))
-        }else{
+        val result = pref.getString(key, "")
+
+        if(result == ""){
             initLogin()
+        }else{
+            intent = Intent(this@MainActivity, NavActivity::class.java)
+            startActivity(intent)
         }
 
-    }*/
+    }
+
 
 }
 

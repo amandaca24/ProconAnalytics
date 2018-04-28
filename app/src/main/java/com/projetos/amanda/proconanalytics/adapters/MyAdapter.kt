@@ -9,7 +9,7 @@ import com.projetos.amanda.proconanalytics.R
 import com.projetos.amanda.proconanalytics.models.FbData
 import kotlinx.android.synthetic.main.itemlist.view.*
 
-class MyAdapter constructor(val context: Context, private val postos: ArrayList<FbData>?, private val clickListener:(FbData)  -> Unit):
+class MyAdapter (val context: Context, val postos: ArrayList<FbData>, val clickListener:(FbData)  -> Unit):
         RecyclerView.Adapter<MyAdapter.ViewHolder>(){
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -33,5 +33,7 @@ class MyAdapter constructor(val context: Context, private val postos: ArrayList<
         }
     }
 
-    override fun getItemCount(): Int = postos?.size ?: 0
+    override fun getItemCount(): Int {
+        return postos.size
+    }
 }

@@ -48,6 +48,7 @@
     <string name="save">Salvar</string>
     <string name="voltar">Voltar</string>
     <string name="confUser">Configurações de conta</string>
+    <string name="savePref">Salvar Preferências</string>
     <string-array name="top10Array">
         <item>Por bairro</item>
         <item>Por combustível</item>

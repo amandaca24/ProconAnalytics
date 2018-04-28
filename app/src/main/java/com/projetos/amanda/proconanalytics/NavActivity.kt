@@ -10,35 +10,47 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.app_bar_nav.*
+import com.projetos.amanda.proconanalytics.constants.Constants
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //Firebase references
-    private var auth: FirebaseAuth? = null
+    private lateinit var auth: FirebaseAuth
+    private lateinit var user:FirebaseUser
+    //private lateinit var myRef:DatabaseReference
 
     //UI elements
     private lateinit var userName: TextView
     private lateinit var userEmail: TextView
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_nav)
         setSupportActionBar(toolbar)
 
-        userEmail = findViewById(R.id.userEmail)
-        userName = findViewById(R.id.userName)
-
         auth = FirebaseAuth.getInstance()
+        user = auth.currentUser!!
+
+        checkLogedUser(user)
 
 
+
+        //showValuesIntent(intent)
+
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        //FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("Disconectado!")
+
+
+
+       // myRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid).child("name")
 
 
         fab.setOnClickListener { view ->
@@ -52,14 +64,13 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-       val user = auth!!.currentUser
+        val headerView:View  = nav_view.getHeaderView(0)
+        userName = headerView.findViewById(R.id.userName)
+        userEmail = headerView.findViewById(R.id.userEmail)
 
         initUserFirebase(user)
+
     }
 
 
@@ -115,15 +126,49 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     }
 
     private fun revokeAccess() {
+        //Deletando SharedPreferences
+        val key = ""
+        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+        val result = pref.getString(key, "")
+
+        if(result == Constants.SP_TOKEN_USER){
+            pref.edit().remove(Constants.SP_TOKEN_USER).apply()
+        }
         // Firebase sign out
-        auth!!.signOut()
+        auth.signOut()
+
+
+        startActivity(Intent(this@NavActivity, MainActivity::class.java))
 
     }
 
-    private fun initUserFirebase(user: FirebaseUser?){
-        userEmail.text = user!!.email
+    private fun initUserFirebase(user: FirebaseUser?) = if(user != null){
+        userEmail.text = user.email
         userName.text = user.displayName
+    }else{
+        userEmail.text = Constants.emailUserDefault
+        userName.text = Constants.nameUserDefault
+    }
+
+
+    private fun checkLogedUser(user: FirebaseUser?){
+
+        if(user != null){
+            initUserFirebase(user)
+
+        }else{
+            getSPUser(Constants.SP_TOKEN_USER)
+        }
 
     }
+
+    private fun getSPUser(key: String){
+        val pref  = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+        val result = pref.getString(key, "")
+
+        var user = result[1]
+
+    }
+
 
 }

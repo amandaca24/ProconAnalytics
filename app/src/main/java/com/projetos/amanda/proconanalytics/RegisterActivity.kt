@@ -9,7 +9,9 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -21,13 +23,15 @@ class RegisterActivity : AppCompatActivity() {
     private var btnCadastrar: Button?=null
     private lateinit var content: View
 
+    private lateinit var mProgressBar: ProgressBar
+
 
     //Firebase references
     private var databaseReference: DatabaseReference? = null
     private var database: FirebaseDatabase? = null
     private var auth: FirebaseAuth? = null
 
-    private val TAG = "Register_Activity"
+    private val tagLog = "Register_Activity"
     //global variables
     private lateinit var email: String
     private lateinit var password: String
@@ -47,12 +51,16 @@ class RegisterActivity : AppCompatActivity() {
         nomeInput = findViewById(R.id.nomeInputTI)
         btnCadastrar = findViewById(R.id.btnCadastrar)
         content = findViewById(R.id.idRegisterAct)
+        mProgressBar = findViewById(R.id.pgBar)
 
         database = FirebaseDatabase.getInstance()
         databaseReference = database!!.reference!!.child("Users")
         auth = FirebaseAuth.getInstance()
 
-        btnCadastrar!!.setOnClickListener { criarNovaConta() }
+        btnCadastrar!!.setOnClickListener { criarNovaConta()
+
+        }
+
     }
 
     private fun criarNovaConta(){
@@ -64,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
             auth!!.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "Usuário cadastrado com sucesso!")
+                    Log.d(tagLog, "Usuário cadastrado com sucesso!")
                     Snackbar.make(content, "Usuário cadastrado com sucesso!", Snackbar.LENGTH_LONG).show()
                     val userId = auth!!.currentUser!!.uid
                     //Verify Email
@@ -74,13 +82,17 @@ class RegisterActivity : AppCompatActivity() {
                     currentUserDb.child("Email").setValue(email)
                     currentUserDb.child("Name").setValue(name)
                     updateUserInfoAndUI()
+
+                    mProgressBar.progress = 20
+                    mProgressBar.secondaryProgress = 50
                 } else {
                             // If sign in fails, display a message to the user.
-                    Log.w(TAG, "Usuário não cadastrado", task.exception)
+                    Log.w(tagLog, "Usuário não cadastrado", task.exception)
                     Snackbar.make(content, "Problemas ao cadastrar o usuário, tente novamente", Snackbar.LENGTH_LONG).show()} }
         } else {
             Snackbar.make(content, "Preencha todos os campos!", Snackbar.LENGTH_LONG).show()
         }
+
 
     }
 
@@ -96,14 +108,16 @@ class RegisterActivity : AppCompatActivity() {
         user!!.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Snackbar.make(content, """E-mail de verificação enviado para ${user.getEmail()}""",
+                        Snackbar.make(content, """E-mail de verificação enviado para ${user.email}""",
                                 Snackbar.LENGTH_LONG).show()
                     } else {
-                        Log.e(TAG, "sendEmailVerification", task.exception)
+                        Log.e(tagLog, "sendEmailVerification", task.exception)
                         Snackbar.make(content, "Problemas ao enviar e-mail de verificação", Snackbar.LENGTH_LONG).show()
                     }
                 }
     }
+
+
 }
 
 
