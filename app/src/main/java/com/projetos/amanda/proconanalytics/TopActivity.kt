@@ -40,9 +40,6 @@ class TopActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top)
 
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        //FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("Disconectado!")
-
         rvTopId.setHasFixedSize(true)
         rvTopId.layoutManager = LinearLayoutManager(this)
 

@@ -23,6 +23,8 @@ class RecuperaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recupera)
+
+        initRecupera()
     }
 
     private fun initRecupera(){

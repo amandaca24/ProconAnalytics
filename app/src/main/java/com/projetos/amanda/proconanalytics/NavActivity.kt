@@ -1,5 +1,6 @@
 package com.projetos.amanda.proconanalytics
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,40 +18,34 @@ import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.app_bar_nav.*
 import com.projetos.amanda.proconanalytics.constants.Constants
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.internal.FirebaseAppHelper.getUid
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.FirebaseAuth
+import android.support.annotation.NonNull
+import com.google.firebase.database.FirebaseDatabase
 
 
 class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //Firebase references
-    private lateinit var auth: FirebaseAuth
-    private lateinit var user:FirebaseUser
-    //private lateinit var myRef:DatabaseReference
+    private var auth: FirebaseAuth? = null
+    private var user:FirebaseUser? = null
+
 
     //UI elements
     private lateinit var userName: TextView
     private lateinit var userEmail: TextView
+    private lateinit var contentV: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_nav)
         setSupportActionBar(toolbar)
 
+
         auth = FirebaseAuth.getInstance()
-        user = auth.currentUser!!
-
-        checkLogedUser(user)
-
-
-
-        //showValuesIntent(intent)
-
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        //FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("Disconectado!")
-
-
-
-       // myRef = FirebaseDatabase.getInstance().getReference("Users").child(user.uid).child("name")
+        contentV = findViewById(R.id.drawer_layout)
+        user = auth!!.currentUser
 
 
         fab.setOnClickListener { view ->
@@ -70,6 +65,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         userEmail = headerView.findViewById(R.id.userEmail)
 
         initUserFirebase(user)
+
 
     }
 
@@ -108,7 +104,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
             }
             id.nav_logout -> {
-                revokeAccess()
+                revokeAccess(user)
+                startActivity(Intent(this@NavActivity, MainActivity::class.java))
             }
 
             id.nav_about_procon -> {
@@ -125,7 +122,13 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         return true
     }
 
-    private fun revokeAccess() {
+    private fun revokeAccess(u: FirebaseUser?) {
+        if(u!= null){
+            auth!!.signOut()
+        }else{
+            Snackbar.make(contentV, "Nenhum usuário logado!!", Snackbar.LENGTH_LONG).show()
+        }
+
         //Deletando SharedPreferences
         val key = ""
         val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
@@ -134,41 +137,34 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         if(result == Constants.SP_TOKEN_USER){
             pref.edit().remove(Constants.SP_TOKEN_USER).apply()
         }
-        // Firebase sign out
-        auth.signOut()
-
-
-        startActivity(Intent(this@NavActivity, MainActivity::class.java))
-
     }
 
-    private fun initUserFirebase(user: FirebaseUser?) = if(user != null){
-        userEmail.text = user.email
-        userName.text = user.displayName
-    }else{
-        userEmail.text = Constants.emailUserDefault
-        userName.text = Constants.nameUserDefault
-    }
-
-
-    private fun checkLogedUser(user: FirebaseUser?){
+    private fun initUserFirebase(user: FirebaseUser?){
 
         if(user != null){
-            initUserFirebase(user)
-
+            userEmail.text = user.email
+            userName.text = user.displayName
         }else{
-            getSPUser(Constants.SP_TOKEN_USER)
+            userEmail.text = Constants.emailUserDefault
+            userName.text = Constants.nameUserDefault
         }
 
     }
 
+
+
     private fun getSPUser(key: String){
-        val pref  = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+        val pref  = getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
         val result = pref.getString(key, "")
 
-        var user = result[1]
+        if(result == Constants.SP_TOKEN_USER){
+            val uid = result[0]
+        }else{
+            initUserFirebase(user)
+        }
 
     }
+
 
 
 }

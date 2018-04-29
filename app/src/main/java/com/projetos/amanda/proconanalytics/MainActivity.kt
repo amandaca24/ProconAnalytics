@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.ProgressBar
 import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
 import com.projetos.amanda.proconanalytics.constants.Constants
@@ -33,8 +32,6 @@ class MainActivity : AppCompatActivity() {
     private var idRecupera: Button? = null
     private lateinit var checkConecta: CheckBox
     private lateinit var contentV: View
-    private lateinit var mProgressBar: ProgressBar
-
 
     private var auth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -44,17 +41,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-        FirebaseDatabase.getInstance().getReference("disconnectmessage").onDisconnect().setValue("Disconectado!")
-
-
         getUserSP(Constants.SP_TOKEN_USER)
 
     }
 
     private fun initLogin(){
-
-
 
         etEmail = findViewById(R.id.idEmailInputTI)
         etPassword = findViewById(R.id.idSenhaInputTI)
@@ -63,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         idRecupera = findViewById(R.id.idRecuperaSenha)
         contentV = findViewById(R.id.idMainAct)
         checkConecta = findViewById(R.id.btnCheckBox)
-        mProgressBar = findViewById(R.id.pgBar)
 
         auth = FirebaseAuth.getInstance()
         mAuthListener = FirebaseAuth.AuthStateListener {  }
@@ -72,8 +62,7 @@ class MainActivity : AppCompatActivity() {
                 .setOnClickListener { startActivity(Intent(this@MainActivity,
                         RegisterActivity::class.java)) }
         btnLogin!!.setOnClickListener { loginUser()
-            mProgressBar.progress = 20
-            mProgressBar.secondaryProgress = 50
+
         }
 
 
@@ -94,6 +83,7 @@ class MainActivity : AppCompatActivity() {
                             // Sign in success, update UI with signed-in user's information
                             Log.d(tagErro, "signInWithEmail:success")
                             val userId = auth!!.currentUser!!.uid
+                            val userToken = auth!!.currentUser!!.getIdToken(true)
                             if(checkConecta.isChecked){
                                 saveUserSP(Constants.SP_TOKEN_USER, value = userId)
                             }
@@ -105,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                             Log.e(tagErro, "signInWithEmail:failure", task.exception)
                             Snackbar.make(contentV, "Problemas na autenticação do usuário", Snackbar.LENGTH_LONG).show()
                         }
+
                     }
         } else {
             Snackbar.make(contentV, "Preencha todos os campos", Snackbar.LENGTH_LONG).show()

@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -75,16 +76,18 @@ class RegisterActivity : AppCompatActivity() {
                     Log.d(tagLog, "Usuário cadastrado com sucesso!")
                     Snackbar.make(content, "Usuário cadastrado com sucesso!", Snackbar.LENGTH_LONG).show()
                     val userId = auth!!.currentUser!!.uid
+                    val user = auth!!.currentUser
                     //Verify Email
                     verifyEmail()
+                    updateUserProfile(user)
                     //update user profile information
                     val currentUserDb = databaseReference!!.child(userId)
                     currentUserDb.child("Email").setValue(email)
                     currentUserDb.child("Name").setValue(name)
+
+
                     updateUserInfoAndUI()
 
-                    mProgressBar.progress = 20
-                    mProgressBar.secondaryProgress = 50
                 } else {
                             // If sign in fails, display a message to the user.
                     Log.w(tagLog, "Usuário não cadastrado", task.exception)
@@ -114,6 +117,17 @@ class RegisterActivity : AppCompatActivity() {
                         Log.e(tagLog, "sendEmailVerification", task.exception)
                         Snackbar.make(content, "Problemas ao enviar e-mail de verificação", Snackbar.LENGTH_LONG).show()
                     }
+                }
+    }
+
+    private fun updateUserProfile(user: FirebaseUser?){
+        val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+                .build()
+
+        user!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) Snackbar.make(content, "Usuário atualizado", Snackbar.LENGTH_LONG).show()
                 }
     }
 
