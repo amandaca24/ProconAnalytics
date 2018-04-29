@@ -5,6 +5,5 @@
 <ul>
   <li>Alexandro Firmo da Silva</li>
   <li>Amanda Carvalho de Andrade</li>
-  <li>Eduardo Pedro de Araújo Silva</li>
   <li>Leonardo de Lira Amorim</li>
  </ul>
