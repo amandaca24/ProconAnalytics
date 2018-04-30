@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import com.google.firebase.auth.*
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.projetos.amanda.proconanalytics.constants.Constants
 
@@ -35,13 +36,30 @@ class MainActivity : AppCompatActivity() {
 
     private var auth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
+    private var presenceRef: DatabaseReference? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //presenceRef!!.onDisconnect().setValue("Desconectado")
+
+        FirebaseDatabase.getInstance().getReference("disconnectmessage")
+
         getUserSP(Constants.SP_TOKEN_USER)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if(FirebaseDatabase.getInstance() != null){
+            FirebaseDatabase.getInstance().goOnline()
+
+        }else{
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        }
 
     }
 
@@ -85,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                             val userId = auth!!.currentUser!!.uid
                             val userToken = auth!!.currentUser!!.getIdToken(true)
                             if(checkConecta.isChecked){
-                                saveUserSP(Constants.SP_TOKEN_USER, value = userId)
+                                saveUserSP(Constants.SP_TOKEN_USER, value = userToken.toString())
                             }
 
                             updateUI()
@@ -134,6 +152,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
 
 }

@@ -52,7 +52,6 @@ class RegisterActivity : AppCompatActivity() {
         nomeInput = findViewById(R.id.nomeInputTI)
         btnCadastrar = findViewById(R.id.btnCadastrar)
         content = findViewById(R.id.idRegisterAct)
-        mProgressBar = findViewById(R.id.pgBar)
 
         database = FirebaseDatabase.getInstance()
         databaseReference = database!!.reference!!.child("Users")

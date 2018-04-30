@@ -34,7 +34,12 @@ class MyAdapter (val context: Context, val postos: ArrayList<FbData>, val clickL
     }
 
     override fun getItemCount(): Int {
-        return postos.size
+        if(postos != null){
+            return postos.size
+        }else{
+            return 0
+        }
+
     }
 
 }

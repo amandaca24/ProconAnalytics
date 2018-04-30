@@ -57,7 +57,7 @@ class TopActivity : AppCompatActivity() {
 
         val dataReference = getInstance().getReference("Pesquisas")
 
-        val query = dataReference!!.limitToLast(10).orderByChild("valor")
+        val query = dataReference!!.limitToFirst(10).orderByChild("valor")
 
 
         query.addValueEventListener(object : ValueEventListener{

@@ -13,16 +13,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import com.google.firebase.auth.*
 import com.projetos.amanda.proconanalytics.R.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.app_bar_nav.*
 import com.projetos.amanda.proconanalytics.constants.Constants
-import com.google.firebase.internal.FirebaseAppHelper.getUid
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.FirebaseAuth
-import android.support.annotation.NonNull
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 
 class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +27,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     //Firebase references
     private var auth: FirebaseAuth? = null
     private var user:FirebaseUser? = null
+    private var connectedRef:DatabaseReference? = null
 
 
     //UI elements
@@ -46,6 +44,11 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         auth = FirebaseAuth.getInstance()
         contentV = findViewById(R.id.drawer_layout)
         user = auth!!.currentUser
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+        connectedRef = FirebaseDatabase.getInstance().getReference("disconnectmessage")
+
+        //getFBData()
+
 
 
         fab.setOnClickListener { view ->
@@ -64,7 +67,8 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         userName = headerView.findViewById(R.id.userName)
         userEmail = headerView.findViewById(R.id.userEmail)
 
-        initUserFirebase(user)
+        //initUserFirebase(user)
+        getSPUser(Constants.SP_TOKEN_USER)
 
 
     }
@@ -125,18 +129,26 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     private fun revokeAccess(u: FirebaseUser?) {
         if(u!= null){
             auth!!.signOut()
+            connectedRef!!.onDisconnect().setValue("Desconectado")
+            FirebaseDatabase.getInstance().goOffline()
+            startActivity(Intent(this@NavActivity, MainActivity::class.java))
         }else{
+            //Deletando SharedPreferences
+            val key = ""
+            val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+            val result = pref.getString(key, "")
+
+                if(result == Constants.SP_TOKEN_USER){
+                    pref.edit().remove(Constants.SP_TOKEN_USER).apply()
+                    pref.edit().clear()
+                    println("SP apagado!!")
+                }
+            FirebaseDatabase.getInstance().goOffline()
             Snackbar.make(contentV, "Nenhum usuário logado!!", Snackbar.LENGTH_LONG).show()
+            startActivity(Intent(this@NavActivity, MainActivity::class.java))
+
         }
 
-        //Deletando SharedPreferences
-        val key = ""
-        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
-        val result = pref.getString(key, "")
-
-        if(result == Constants.SP_TOKEN_USER){
-            pref.edit().remove(Constants.SP_TOKEN_USER).apply()
-        }
     }
 
     private fun initUserFirebase(user: FirebaseUser?){
@@ -158,11 +170,34 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         val result = pref.getString(key, "")
 
         if(result == Constants.SP_TOKEN_USER){
-            val uid = result[0]
+            val uidPref = result[1].toString()
+            auth!!.signInWithCustomToken(uidPref)
+            val userLoged = auth!!.currentUser
+            initUserFirebase(userLoged)
         }else{
             initUserFirebase(user)
         }
 
+    }
+
+    private fun getFBData(){
+
+        connectedRef = FirebaseDatabase.getInstance().getReference("disconnectmessage")
+
+        connectedRef!!.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot?) {
+                val connected = p0!!.getValue(Boolean::class.java)
+                if (connected!!) {
+                    println("connected")
+                } else {
+                    println("not connected")
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
     }
 
 
