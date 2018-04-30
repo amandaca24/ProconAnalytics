@@ -127,25 +127,18 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     }
 
     private fun revokeAccess(u: FirebaseUser?) {
+        FirebaseDatabase.getInstance().goOffline()
+        connectedRef!!.onDisconnect().setValue("Desconectado")
+
+        deleteSP(Constants.SP_TOKEN_USER)
+
         if(u!= null){
             auth!!.signOut()
-            connectedRef!!.onDisconnect().setValue("Desconectado")
-            FirebaseDatabase.getInstance().goOffline()
+            //Deletando SharedPreferences
+
             startActivity(Intent(this@NavActivity, MainActivity::class.java))
         }else{
-            //Deletando SharedPreferences
-            val key = ""
-            val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
-            val result = pref.getString(key, "")
-
-                if(result == Constants.SP_TOKEN_USER){
-                    pref.edit().remove(Constants.SP_TOKEN_USER).apply()
-                    pref.edit().clear()
-                    println("SP apagado!!")
-                }
-            FirebaseDatabase.getInstance().goOffline()
             Snackbar.make(contentV, "Nenhum usuário logado!!", Snackbar.LENGTH_LONG).show()
-            startActivity(Intent(this@NavActivity, MainActivity::class.java))
 
         }
 
@@ -180,26 +173,19 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
     }
 
-    private fun getFBData(){
+    private fun deleteSP(key: String){
+        val pref = this.getSharedPreferences("com.projetos.amanda.proconanalytics.main_activity", android.content.Context.MODE_PRIVATE)
+        val result = pref.getString(key, "")
 
-        connectedRef = FirebaseDatabase.getInstance().getReference("disconnectmessage")
+            if(result == ""){
+                println("Sem Shared Preferences")
 
-        connectedRef!!.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(p0: DataSnapshot?) {
-                val connected = p0!!.getValue(Boolean::class.java)
-                if (connected!!) {
-                    println("connected")
-                } else {
-                    println("not connected")
-                }
+            }else{
+                pref.edit().remove(key).apply()
+                pref.edit().clear().apply()
+                println("SP apagado!!")
             }
-
-            override fun onCancelled(p0: DatabaseError?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
     }
-
 
 
 }
