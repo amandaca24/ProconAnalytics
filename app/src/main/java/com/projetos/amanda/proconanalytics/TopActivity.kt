@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase.*
 import com.projetos.amanda.proconanalytics.adapters.MyAdapter
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_top.*
 class TopActivity : AppCompatActivity() {
 
     private var postos: ArrayList<FbData> = ArrayList<FbData>()
+    private lateinit var pb: ProgressBar
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var myRef:DatabaseReference
@@ -39,6 +41,12 @@ class TopActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top)
+
+        pb = findViewById(R.id.idPB)
+
+        pb.isIndeterminate
+        pb.visibility
+
 
         rvTopId.setHasFixedSize(true)
         rvTopId.layoutManager = LinearLayoutManager(this)
