@@ -1,6 +1,7 @@
 package com.projetos.amanda.proconanalytics
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.FirebaseDatabase.*
 import com.projetos.amanda.proconanalytics.adapters.MyAdapter
 import com.projetos.amanda.proconanalytics.models.FbData
+import com.projetos.amanda.proconanalytics.receivers.ConnReceiver
 import kotlinx.android.synthetic.main.activity_top.*
 
 class TopActivity : AppCompatActivity() {
@@ -20,6 +22,8 @@ class TopActivity : AppCompatActivity() {
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var myRef:DatabaseReference
+
+    var br = ConnReceiver()
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -42,10 +46,11 @@ class TopActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_top)
 
-        pb = findViewById(R.id.idPB)
 
-        pb.isIndeterminate
-        pb.visibility
+        //Avisa se houve mudança na conexão - só funciona se estiver conectado a internet
+        registerReceiver(br, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
+
+        pb = findViewById(R.id.idPB)
 
 
         rvTopId.setHasFixedSize(true)
@@ -78,8 +83,14 @@ class TopActivity : AppCompatActivity() {
                     val nome = snapshot.child("nome").value.toString()
                     val produto = snapshot.child("combustivel").value.toString()
                     val valor = snapshot.child("valor").value.toString()
+                    val lat = snapshot.child("latitude").value.toString()
+                    val longi = snapshot.child("longitude").value.toString()
 
-                    postos.add(FbData(bairro, bandeira, nome, produto, valor))
+                    val latitude = lat.toDouble()
+                    val longitude = longi.toDouble()
+
+                    postos.add(FbData(bairro, bandeira, nome, produto, valor, latitude, longitude))
+
 
                 }
 
@@ -93,10 +104,14 @@ class TopActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(br)
     }
 
 }

@@ -47,6 +47,16 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"/>
+
+        <receiver
+            android:name=".receivers.ConnReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

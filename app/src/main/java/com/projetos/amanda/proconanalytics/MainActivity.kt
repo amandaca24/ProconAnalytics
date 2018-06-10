@@ -1,6 +1,7 @@
 package com.projetos.amanda.proconanalytics
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -14,6 +15,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.projetos.amanda.proconanalytics.constants.Constants
+import com.projetos.amanda.proconanalytics.receivers.ConnReceiver
 
 //import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,12 +40,14 @@ class MainActivity : AppCompatActivity() {
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
     private var presenceRef: DatabaseReference? = null
 
+    var br = ConnReceiver()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //presenceRef!!.onDisconnect().setValue("Desconectado")
+        registerReceiver(br, IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"))
 
         FirebaseDatabase.getInstance().getReference("disconnectmessage")
 
@@ -153,7 +157,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(br)
+    }
 
 }
 

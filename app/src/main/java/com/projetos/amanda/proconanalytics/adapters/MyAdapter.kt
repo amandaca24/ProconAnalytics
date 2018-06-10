@@ -1,10 +1,12 @@
 package com.projetos.amanda.proconanalytics.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.projetos.amanda.proconanalytics.MapsActivity
 import com.projetos.amanda.proconanalytics.R
 import com.projetos.amanda.proconanalytics.models.FbData
 import kotlinx.android.synthetic.main.itemlist.view.*
@@ -28,7 +30,7 @@ class MyAdapter (val context: Context, val postos: ArrayList<FbData>, val clickL
             holder.itemView.idBairro.text = posto.bairroFB
             holder.itemView.idBandeira.text = posto.bandeiraFB
             holder.itemView.idProduto.text = posto.produtoFB
-            holder.itemView.setOnClickListener { clickListener(postos[position]) }
+            holder.itemView.setOnClickListener { openMaps(postos[position]) }
 
         }
     }
@@ -39,6 +41,15 @@ class MyAdapter (val context: Context, val postos: ArrayList<FbData>, val clickL
         }else{
             return 0
         }
+
+    }
+
+    private fun openMaps(posto: FbData){
+        var intent = Intent(context, MapsActivity::class.java)
+        intent.putExtra("latitude", posto.latitude)
+        intent.putExtra("longitude",posto.longitude)
+        intent.putExtra("name", posto.nomeFB)
+        context.startActivity(intent)
 
     }
 

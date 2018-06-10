@@ -103,18 +103,18 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         // Handle navigation view item clicks here.
         when (item.itemId) {
             id.nav_dashboard -> startActivity(Intent(this@NavActivity, DashboardActivity::class.java))
-            id.nav_top10 -> startActivity(Intent(this@NavActivity, TopActivity::class.java))
-            id.id_map -> {
 
-            }
+            id.nav_top10 -> startActivity(Intent(this@NavActivity, TopActivity::class.java))
+
+            id.id_map -> { startActivity(Intent(this@NavActivity, MapsActivity::class.java)) }
+
             id.nav_logout -> {
                 revokeAccess(user)
                 startActivity(Intent(this@NavActivity, MainActivity::class.java))
             }
 
             id.nav_about_procon -> {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.joaopessoa.pb.gov.br/secretarias/procon/")))
-            }
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.joaopessoa.pb.gov.br/secretarias/procon/"))) }
 
             id.nav_about_analytics -> {
 

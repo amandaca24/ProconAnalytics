@@ -9,6 +9,8 @@ class FbData (
     var bandeiraFB: String ,
     var nomeFB: String,
     var produtoFB: String,
-    var valorFB: String
+    var valorFB: String,
+    var latitude: Double,
+    var longitude: Double
 ){
 }
