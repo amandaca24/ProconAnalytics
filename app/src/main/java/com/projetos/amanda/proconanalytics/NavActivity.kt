@@ -117,6 +117,7 @@ class NavActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelected
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.joaopessoa.pb.gov.br/secretarias/procon/"))) }
 
             id.nav_about_analytics -> {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://proconanalytics.pythonanywhere.com/")))
 
             }
 
