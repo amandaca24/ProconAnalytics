@@ -100,6 +100,8 @@ class TopActivity : AppCompatActivity() {
 
                 rvTopId.adapter = myAdapter
 
+                pb.visibility
+
 
             }
 
